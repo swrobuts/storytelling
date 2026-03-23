@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>McKinsey Storytelling – Das SCR-Framework</title>
+<style>
+/* ═══════════════════════════════
+   DESIGN TOKENS – 8px Grid
+═══════════════════════════════ */
+:root {
+  --white:      #FFFFFF;
+  --gray-50:    #F8F9FA;
+  --gray-100:   #F1F3F5;
+  --gray-200:   #E9ECEF;
+  --gray-300:   #DEE2E6;
+  --gray-400:   #ADB5BD;
+  --gray-500:   #8E9BA8;
+  --gray-600:   #6C757D;
+  --gray-700:   #495057;
+  --gray-800:   #343A40;
+  --gray-900:   #212529;
+
+  --orange:     #E87722;
+  --orange-10:  rgba(232,119,34,0.10);
+  --orange-20:  rgba(232,119,34,0.20);
+  --blue:       #005B9A;
+  --blue-10:    rgba(0,91,154,0.08);
+  --blue-20:    rgba(0,91,154,0.16);
+  --green:      #3D7A56;
+  --green-10:   rgba(61,122,86,0.10);
+  --red:        #C0392B;
+  --red-10:     rgba(192,57,43,0.10);
+
+  --sp1: 8px; --sp2: 16px; --sp3: 24px; --sp4: 32px;
+  --sp5: 40px; --sp6: 48px; --sp8: 64px;
+  --font: 'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px;
+  --shadow: 0 1px 4px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--white);
+  color: var(--gray-900);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════
+   ORANGE TOP BAR
+═══════════════════════════════ */
+.top-bar {
+  height: 4px;
+  background: var(--orange);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+}
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+nav {
+  position: fixed;
+  top: 4px; left: 0; right: 0;
+  height: 56px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp4);
+  z-index: 999;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: var(--sp2);
+}
+.nav-brand-dot {
+  width: 8px; height: 8px;
+  background: var(--orange);
+  border-radius: 50%;
+}
+.nav-brand-label {
+  font-size: 13px; font-weight: 700;
+  color: var(--gray-900);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.nav-links {
+  display: flex; gap: var(--sp3); flex-wrap: wrap;
+}
+.nav-link {
+  font-size: 13px; color: var(--gray-600);
+  text-decoration: none; font-weight: 500;
+  transition: color .15s;
+}
+.nav-link:hover { color: var(--orange); }
+
+/* ═══════════════════════════════
+   LAYOUT
+═══════════════════════════════ */
+main { padding-top: 60px; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 var(--sp4); }
+.container-wide { max-width: 1120px; margin: 0 auto; padding: 0 var(--sp4); }
+
+section { padding: var(--sp8) 0; }
+section:nth-child(even) { background: var(--gray-50); }
+
+/* ═══════════════════════════════
+   EYEBROW
+═══════════════════════════════ */
+.eyebrow {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--orange);
+  margin-bottom: var(--sp2);
+  display: flex; align-items: center; gap: var(--sp1);
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 16px; height: 2px;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.hero {
+  padding: var(--sp8) 0;
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--white);
+}
+.hero-inner {
+  max-width: 720px;
+}
+.hero h1 {
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 800; line-height: 1.15;
+  color: var(--gray-900);
+  margin-bottom: var(--sp3);
+}
+.hero h1 span { color: var(--orange); }
+.hero-sub {
+  font-size: 17px; color: var(--gray-600);
+  line-height: 1.7; max-width: 580px;
+  margin-bottom: var(--sp6);
+}
+.hero-meta {
+  display: flex; gap: var(--sp4); flex-wrap: wrap;
+  border-top: 1px solid var(--gray-200);
+  padding-top: var(--sp3);
+}
+.hero-meta-item {
+  display: flex; align-items: center; gap: var(--sp1);
+  font-size: 12px; color: var(--gray-500); font-weight: 500;
+}
+.hero-meta-item svg { stroke: var(--orange); }
+
+/* ═══════════════════════════════
+   SECTION TITLES
+═══════════════════════════════ */
+.section-title {
+  font-size: 28px; font-weight: 800;
+  color: var(--gray-900); margin-bottom: var(--sp2);
+}
+.section-sub {
+  font-size: 15px; color: var(--gray-600);
+  max-width: 560px; margin-bottom: var(--sp5);
+  line-height: 1.7;
+}
+
+/* ═══════════════════════════════
+   SCR CARDS
+═══════════════════════════════ */
+.scr-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp3);
+  margin-bottom: var(--sp4);
+}
+@media (max-width: 680px) { .scr-grid { grid-template-columns: 1fr; } }
+
+.scr-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  padding: var(--sp4);
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+  position: relative;
+  overflow: hidden;
+}
+.scr-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+.scr-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.scr-card.situation::before { background: var(--blue); }
+.scr-card.complication::before { background: var(--red); }
+.scr-card.resolution::before { background: var(--green); }
+
+.scr-letter {
+  font-size: 48px; font-weight: 800; line-height: 1;
+  margin-bottom: var(--sp2);
+  opacity: 0.12;
+  position: absolute; top: var(--sp3); right: var(--sp3);
+}
+.scr-card.situation .scr-letter { color: var(--blue); }
+.scr-card.complication .scr-letter { color: var(--red); }
+.scr-card.resolution .scr-letter { color: var(--green); }
+
+.scr-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--sp2);
+}
+.situation .scr-icon { background: var(--blue-10); }
+.complication .scr-icon { background: var(--red-10); }
+.resolution .scr-icon { background: var(--green-10); }
+
+.scr-card h3 {
+  font-size: 17px; font-weight: 700;
+  margin-bottom: var(--sp1);
+  color: var(--gray-900);
+}
+.scr-card p { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+
+/* ═══════════════════════════════
+   KING COUNTY EXAMPLE
+═══════════════════════════════ */
+.case-box {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.case-header {
+  background: var(--gray-900);
+  padding: var(--sp3) var(--sp4);
+  display: flex; align-items: center; gap: var(--sp2);
+}
+.case-header-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.case-header-label {
+  font-size: 12px; font-weight: 600;
+  color: var(--gray-400); letter-spacing: 0.08em;
+  text-transform: uppercase; flex: 1;
+}
+.case-body { padding: var(--sp5) var(--sp6); }
+.case-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--sp3);
+  padding: var(--sp3) 0;
+  border-bottom: 1px solid var(--gray-100);
+  align-items: start;
+}
+.case-row:last-child { border-bottom: none; }
+.case-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 4px 10px; border-radius: 20px;
+  display: inline-block; margin-top: 2px;
+  white-space: nowrap;
+}
+.label-s { background: var(--blue-10); color: var(--blue); }
+.label-c { background: var(--red-10); color: var(--red); }
+.label-r { background: var(--green-10); color: var(--green); }
+.case-text { font-size: 14px; color: var(--gray-700); line-height: 1.65; }
+.case-text strong { color: var(--gray-900); }
+
+/* ═══════════════════════════════
+   PROCESS STEPS
+═══════════════════════════════ */
+.process-steps {
+  display: flex; flex-direction: column; gap: var(--sp3);
+}
+.process-step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: var(--sp3);
+  align-items: start;
+}
+.step-num {
+  width: 40px; height: 40px;
+  background: var(--blue);
+  color: var(--white);
+  border-radius: 50%;
+  font-size: 17px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px var(--blue-10);
+}
+.step-content {}
+.step-title {
+  font-size: 17px; font-weight: 700;
+  color: var(--gray-900); margin-bottom: 4px;
+}
+.step-desc { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+.step-tag {
+  display: inline-block;
+  font-size: 11px; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px;
+  background: var(--orange-10); color: var(--orange);
+  margin-top: var(--sp1); letter-spacing: 0.04em;
+}
+.step-connector {
+  height: 24px;
+  margin-left: 28px;
+  border-left: 2px dashed var(--gray-200);
+}
+
+/* ═══════════════════════════════
+   DOT-DASH VISUAL
+═══════════════════════════════ */
+.dot-dash-box {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.dot-dash-header {
+  padding: var(--sp3) var(--sp4);
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--gray-500);
+}
+.dot-item {
+  padding: var(--sp3) var(--sp4);
+  border-bottom: 1px solid var(--gray-100);
+}
+.dot-item:last-child { border-bottom: none; }
+.dot-row {
+  display: flex; gap: var(--sp2); align-items: flex-start;
+  margin-bottom: var(--sp2);
+}
+.dot-marker {
+  width: 20px; height: 20px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.dot-marker svg { stroke: white; }
+.dot-text {
+  font-size: 14px; font-weight: 600; color: var(--gray-900); line-height: 1.5;
+}
+.dash-rows { margin-left: var(--sp5); }
+.dash-row {
+  display: flex; gap: var(--sp2); align-items: flex-start;
+  margin-bottom: var(--sp1);
+}
+.dash-marker {
+  width: 14px; height: 14px;
+  border: 2px solid var(--gray-300);
+  border-radius: 50%;
+  flex-shrink: 0; margin-top: 3px;
+}
+.dash-text { font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+
+/* ═══════════════════════════════
+   TWO-FLOW GRID
+═══════════════════════════════ */
+.flow-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp3);
+}
+@media (max-width: 640px) { .flow-grid { grid-template-columns: 1fr; } }
+
+.flow-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  padding: var(--sp4);
+  box-shadow: var(--shadow);
+}
+.flow-card.horizontal { border-left: 4px solid var(--orange); }
+.flow-card.vertical   { border-left: 4px solid var(--blue); }
+.flow-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--sp2);
+}
+.flow-card.horizontal .flow-icon { background: var(--orange-10); }
+.flow-card.vertical   .flow-icon { background: var(--blue-10); }
+.flow-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.flow-desc  { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+.flow-rule  {
+  margin-top: var(--sp2);
+  padding: var(--sp2);
+  border-radius: var(--r-sm);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.flow-card.horizontal .flow-rule { background: var(--orange-10); color: var(--orange); }
+.flow-card.vertical   .flow-rule { background: var(--blue-10); color: var(--blue); }
+
+/* ═══════════════════════════════
+   WORD VS PPT
+═══════════════════════════════ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp3);
+}
+@media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+
+.compare-card {
+  border-radius: var(--r-lg);
+  padding: var(--sp4);
+  border: 1px solid var(--gray-200);
+}
+.compare-card.word  { background: var(--green-10); border-color: rgba(61,122,86,0.25); }
+.compare-card.ppt   { background: var(--gray-100); border-color: var(--gray-300); }
+.compare-card-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: var(--sp2);
+}
+.compare-card.word .compare-card-label { color: var(--green); }
+.compare-card.ppt  .compare-card-label { color: var(--gray-500); }
+.compare-card h4 { font-size: 16px; font-weight: 700; margin-bottom: var(--sp2); }
+.compare-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.compare-list li {
+  font-size: 13px; color: var(--gray-700); line-height: 1.5;
+  display: flex; gap: var(--sp1); align-items: flex-start;
+}
+.compare-list li::before {
+  content: '';
+  display: block;
+  width: 6px; height: 6px; border-radius: 50%;
+  margin-top: 7px; flex-shrink: 0;
+}
+.compare-card.word .compare-list li::before { background: var(--green); }
+.compare-card.ppt  .compare-list li::before { background: var(--gray-400); }
+
+/* ═══════════════════════════════
+   SUMMARY BOARD
+═══════════════════════════════ */
+.summary-board {
+  background: var(--gray-900);
+  border-radius: var(--r-lg);
+  padding: var(--sp6);
+  color: var(--white);
+}
+.summary-board .eyebrow { color: var(--orange); }
+.summary-board .eyebrow::before { background: var(--orange); }
+.summary-board h2 { font-size: 24px; font-weight: 800; margin-bottom: var(--sp4); color: var(--white); }
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp3);
+}
+@media (max-width: 640px) { .summary-grid { grid-template-columns: 1fr; } }
+
+.summary-item {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-md);
+  padding: var(--sp3);
+}
+.summary-num {
+  font-size: 36px; font-weight: 800;
+  color: var(--orange); line-height: 1; margin-bottom: 8px;
+}
+.summary-label { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+.summary-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+
+/* ═══════════════════════════════
+   QUOTE BLOCK
+═══════════════════════════════ */
+.quote-block {
+  border-left: 4px solid var(--orange);
+  padding: var(--sp3) var(--sp4);
+  background: var(--orange-10);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  margin: var(--sp4) 0;
+}
+.quote-text {
+  font-size: 17px; font-style: italic;
+  color: var(--gray-800); line-height: 1.65;
+  margin-bottom: 8px;
+}
+.quote-source { font-size: 12px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ═══════════════════════════════
+   INFO BOXES (generic)
+═══════════════════════════════ */
+.infobox {
+  border-radius: var(--r-md);
+  padding: var(--sp3) var(--sp4);
+  margin: var(--sp4) 0;
+  display: flex;
+  gap: var(--sp3);
+  align-items: flex-start;
+}
+.infobox-blue  { background: var(--blue-10);  border: 1px solid var(--blue-20); }
+.infobox-orange{ background: var(--orange-10); border: 1px solid var(--orange-20); }
+.infobox-gray  { background: var(--gray-100);  border: 1px solid var(--gray-200); }
+.infobox svg { flex-shrink: 0; margin-top: 2px; }
+.infobox-blue  svg { stroke: var(--blue); }
+.infobox-orange svg { stroke: var(--orange); }
+.infobox-gray  svg { stroke: var(--gray-500); }
+.infobox-content { flex: 1; }
+.infobox-title {
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.infobox-blue  .infobox-title { color: var(--blue); }
+.infobox-orange .infobox-title { color: var(--orange); }
+.infobox-gray  .infobox-title { color: var(--gray-600); }
+.infobox-text  { font-size: 13px; line-height: 1.7; color: var(--gray-700); }
+.infobox-blue  .infobox-text  { color: var(--blue); }
+
+/* ═══════════════════════════════
+   ACTION TITLE TABLE
+═══════════════════════════════ */
+.action-table-wrap {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin: var(--sp3) 0;
+}
+.action-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.action-table thead tr th {
+  padding: var(--sp2) var(--sp3);
+  text-align: left;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  background: var(--gray-50);
+  border-bottom: 2px solid var(--gray-200);
+}
+.action-table thead th.col-bad  { color: var(--red); }
+.action-table thead th.col-good { color: var(--green); }
+.action-table tbody td {
+  padding: 10px var(--sp3);
+  border-bottom: 1px solid var(--gray-100);
+  vertical-align: top; line-height: 1.5;
+}
+.action-table tbody td.col-bad  { color: var(--gray-500); }
+.action-table tbody td.col-good { color: var(--gray-900); font-weight: 500; }
+.action-table tbody tr:last-child td { border-bottom: none; }
+.action-table-note {
+  padding: var(--sp2) var(--sp3);
+  font-size: 12px; color: var(--orange); font-weight: 600;
+  background: var(--orange-10);
+  border-top: 1px solid var(--orange-20);
+}
+
+/* ═══════════════════════════════
+   MECE GRID
+═══════════════════════════════ */
+.mece-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp3);
+  margin: var(--sp3) 0;
+}
+@media (max-width: 640px) { .mece-grid { grid-template-columns: 1fr; } }
+.mece-card {
+  padding: var(--sp3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--gray-200);
+}
+.mece-card-me { background: var(--orange-10); border-color: var(--orange-20); }
+.mece-card-ce { background: var(--blue-10);   border-color: var(--blue-20); }
+.mece-card-title {
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.mece-card-me .mece-card-title { color: var(--orange); }
+.mece-card-ce .mece-card-title { color: var(--blue); }
+.mece-card-desc { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
+.mece-test {
+  margin-top: var(--sp3);
+  padding: var(--sp3);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-md);
+  font-size: 13px; color: var(--gray-700); line-height: 1.7;
+}
+.mece-test strong { color: var(--gray-900); }
+
+/* ═══════════════════════════════
+   SYNTHESIS SECTION
+═══════════════════════════════ */
+.synthesis-table-wrap {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: var(--sp5);
+  overflow-x: auto;
+}
+.synthesis-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 600px;
+}
+.synthesis-table thead th {
+  padding: var(--sp2) var(--sp3);
+  text-align: left;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  background: var(--gray-900);
+  color: rgba(255,255,255,0.5);
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+.synthesis-table thead th:first-child { color: var(--orange); }
+.synthesis-table tbody td {
+  padding: 10px var(--sp3);
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-700);
+  vertical-align: top; line-height: 1.55;
+}
+.synthesis-table tbody td:first-child {
+  font-weight: 700; color: var(--gray-900); white-space: nowrap;
+}
+.synthesis-table tbody tr:last-child td { border-bottom: none; }
+.synthesis-table tbody tr:nth-child(odd) td { background: var(--gray-50); }
+.synthesis-table tbody tr:nth-child(even) td { background: var(--white); }
+
+.combo-rules {
+  display: flex; flex-direction: column; gap: var(--sp3);
+}
+.combo-rule {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--sp3);
+  align-items: flex-start;
+  padding: var(--sp3) var(--sp4);
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow);
+}
+.combo-rule-num {
+  width: 32px; height: 32px;
+  background: var(--orange);
+  color: white; border-radius: 50%;
+  font-size: 14px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.combo-rule-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.combo-rule-desc  { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+
+/* ═══════════════════════════════
+   CHECKLIST
+═══════════════════════════════ */
+.checklist-phases {
+  display: flex; flex-direction: column; gap: var(--sp4);
+}
+.checklist-phase {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.checklist-phase-header {
+  padding: var(--sp3) var(--sp4);
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; gap: var(--sp2); align-items: center;
+}
+.checklist-phase-num {
+  width: 28px; height: 28px;
+  background: var(--blue); color: white;
+  border-radius: 50%; font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.checklist-phase-num.final { background: var(--orange); }
+.checklist-phase-title {
+  font-size: 14px; font-weight: 700; color: var(--gray-900);
+}
+.checklist-items { padding: var(--sp1) 0; }
+.checklist-item {
+  display: flex; gap: var(--sp3);
+  padding: 10px var(--sp4);
+  border-bottom: 1px solid var(--gray-50);
+  align-items: flex-start;
+}
+.checklist-item:last-child { border-bottom: none; }
+.check-box {
+  width: 18px; height: 18px;
+  border: 2px solid var(--gray-300);
+  border-radius: 4px;
+  flex-shrink: 0; margin-top: 1px;
+  background: var(--white);
+}
+.checklist-item-text {
+  font-size: 13px; color: var(--gray-700); line-height: 1.55;
+}
+
+/* ═══════════════════════════════
+   LITERATURE
+═══════════════════════════════ */
+.lit-list {
+  list-style: none; padding: 0;
+  display: flex; flex-direction: column; gap: var(--sp2);
+}
+.lit-list li {
+  font-size: 13px; color: var(--gray-600); line-height: 1.65;
+  padding: var(--sp2) var(--sp3);
+  background: var(--gray-50);
+  border-radius: var(--r-sm);
+  border-left: 3px solid var(--orange);
+}
+.lit-list li em { font-style: italic; color: var(--gray-800); }
+
+/* ═══════════════════════════════
+   SCROLL-REVEAL
+═══════════════════════════════ */
+.sr {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.sr.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.sr-delay-1 { transition-delay: .08s; }
+.sr-delay-2 { transition-delay: .16s; }
+.sr-delay-3 { transition-delay: .24s; }
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer {
+  padding: var(--sp6) 0;
+  border-top: 1px solid var(--gray-200);
+  background: var(--white);
+}
+.footer-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: var(--sp2);
+}
+.footer-brand { font-size: 12px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; }
+.footer-note  { font-size: 12px; color: var(--gray-400); }
+
+/* ═══════════════════════════════
+   INTERACTIVE FLASHCARD
+═══════════════════════════════ */
+.scr-interactive {
+  display: flex; gap: var(--sp2);
+  margin-bottom: var(--sp5);
+}
+.scr-tab {
+  padding: var(--sp1) var(--sp3);
+  border-radius: 20px; cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  border: 2px solid var(--gray-200);
+  background: var(--white);
+  color: var(--gray-600);
+  transition: all .15s;
+}
+.scr-tab.active-s { border-color: var(--blue); background: var(--blue); color: white; }
+.scr-tab.active-c { border-color: var(--red); background: var(--red); color: white; }
+.scr-tab.active-r { border-color: var(--green); background: var(--green); color: white; }
+.scr-panel { display: none; }
+.scr-panel.active { display: block; }
+
+.info-band {
+  background: var(--blue-10);
+  border: 1px solid var(--blue-20);
+  border-radius: var(--r-md);
+  padding: var(--sp3) var(--sp4);
+  margin-bottom: var(--sp4);
+  display: flex; gap: var(--sp3); align-items: flex-start;
+}
+.info-band svg { flex-shrink: 0; margin-top: 2px; stroke: var(--blue); }
+.info-band-text { font-size: 13px; color: var(--blue); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- Orange Top Bar -->
+<div class="top-bar"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-brand-dot"></div>
+    <span class="nav-brand-label">McKinsey · SCR-Framework</span>
+  </div>
+  <div class="nav-links">
+    <a href="#framework" class="nav-link">Framework</a>
+    <a href="#example"   class="nav-link">Fallstudie</a>
+    <a href="#process"   class="nav-link">Prozess</a>
+    <a href="#summary"   class="nav-link">Zusammenfassung</a>
+    <a href="#synthese"  class="nav-link">Synthese</a>
+    <a href="#checkliste" class="nav-link">Checkliste</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner sr">
+        <div class="eyebrow">Consulting · Kommunikation</div>
+        <h1>Storytelling in<br>Präsentationen –<br><span>Das McKinsey-Framework</span></h1>
+        <p class="hero-sub">
+          Wie strukturieren Top-Beratungsfirmen ihre Slide-Decks so, dass Kunden wirklich handeln? Das SCR-Framework ist die universelle Antwort – angewendet von McKinsey, BCG und Bain weltweit.
+        </p>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            3 Schritte · 4 Phasen
+          </div>
+          <div class="hero-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+            </svg>
+            King County Fallstudie
+          </div>
+          <div class="hero-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            Für Entscheidungspräsentationen
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DAS FRAMEWORK ═══ -->
+  <section id="framework">
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Das SCR / SCQA-Framework</div>
+        <h2 class="section-title">Situation · Komplikation · Lösung</h2>
+        <p class="section-sub">
+          Eine Struktur, die überall funktioniert – in Filmen, Büchern, Theaterstücken und eben auch in Consulting-Präsentationen. McKinsey hat sie zur Wissenschaft gemacht.
+        </p>
+      </div>
+
+      <!-- SCR Cards -->
+      <div class="scr-grid">
+        <div class="scr-card situation sr sr-delay-1">
+          <div class="scr-letter">S</div>
+          <div class="scr-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005B9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h3>Situation</h3>
+          <p>Stellt das Kontextwissen bereit, das der Leser braucht, um das Thema oder Problem zu verstehen – und erklärt, warum es für ihn relevant ist.</p>
+        </div>
+
+        <div class="scr-card complication sr sr-delay-2">
+          <div class="scr-letter">C</div>
+          <div class="scr-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <h3>Komplikation</h3>
+          <p>Führt das eigentliche Problem ein und erklärt, warum es so gravierend ist. Bereitet die Bühne – das Publikum soll verstehen, dass wirklich Handlungsbedarf besteht.</p>
+          <p style="margin-top:8px;font-size:12px;color:var(--gray-400);font-style:italic;">Implizite Frage (Q): „Was sollten wir dagegen tun?"</p>
+        </div>
+
+        <div class="scr-card resolution sr sr-delay-3">
+          <div class="scr-letter">R</div>
+          <div class="scr-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3D7A56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h3>Resolution / Antwort</h3>
+          <p>Benennt die konkreten Lösungsansätze und Empfehlungen, um das in der Komplikation beschriebene Problem anzugehen. Der Bauplan für die Lösung.</p>
+        </div>
+      </div>
+
+      <!-- Bridge Logic S→C -->
+      <div class="infobox infobox-orange sr">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/>
+        </svg>
+        <div class="infobox-content">
+          <div class="infobox-title">Brückenformel S → C</div>
+          <div class="infobox-text">
+            Der Übergang von Situation zu Komplikation folgt fast immer einem von drei Mustern:<br><br>
+            <strong>1. Obwohl/Trotz</strong> – „Obwohl X gilt, tritt Y auf."<br>
+            <strong>2. Aber</strong> – „Der Markt wächst, aber ein strukturelles Problem bedroht die Entwicklung."<br>
+            <strong>3. Wenn nicht</strong> – „Wenn wir nichts ändern, werden die Kosten bis 2025 auf Z steigen."<br><br>
+            Diese Brückenformel erzeugt den Handlungsdruck, der das Publikum zur impliziten Frage führt.
+          </div>
+        </div>
+      </div>
+
+      <!-- Minto / Pyramid Principle -->
+      <div class="infobox infobox-blue sr">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 20h20L12 4z"/>
+        </svg>
+        <div class="infobox-content">
+          <div class="infobox-title">Herkunft: Barbara Minto &amp; das Pyramid Principle</div>
+          <div class="infobox-text">
+            Das SCR/SCQA-Framework basiert auf Barbara Mintos <em>Pyramid Principle</em> (1987), das sie als McKinsey-Beraterin entwickelte. Die Kernidee: Beginne mit der Schlussfolgerung (Antwort), stütze sie durch gruppierende Argumente, belege jedes Argument mit Fakten. McKinsey verfeinerte das Framework zur SCQA-Variante. Das Pyramidenprinzip ist bis heute die Basis strukturierten Consulting-Denkens weltweit.
+          </div>
+        </div>
+      </div>
+
+      <!-- SCQA Info Band -->
+      <div class="sr">
+        <div class="info-band">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <p class="info-band-text">
+            <strong>SCR vs. SCQA:</strong> Beide Varianten sind äquivalent. McKinsey bevorzugt das SCQA-Framework (<strong>S</strong>ituation – <strong>C</strong>omplication – <strong>Q</strong>uestion – <strong>A</strong>nswer), während viele andere das vereinfachte SCR nutzen. Im SCQA-Format steht die explizite Frage („Was sollte King County tun?") als eigenständiger Schritt zwischen Komplikation und Antwort. Die Logik ist identisch – das „Q" ist im SCR implizit enthalten.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="quote-block sr">
+        <p class="quote-text">Ein zentrales McKinsey-Prinzip lautet: Die Storyline ist der wichtigste Teil des Slide-Decks. Eine wirklich gute Storyline wird den Leser zum Handeln bewegen, eine wirklich schlechte Storyline wird völlig ins Leere laufen.</p>
+        <div class="quote-source">McKinsey &amp; Company · Communicating for Impact, 2022</div>
+      </div>
+
+      <!-- Framework Limitations -->
+      <div class="infobox infobox-gray sr">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <div class="infobox-content">
+          <div class="infobox-title">Hinweis: Grenzen des Frameworks</div>
+          <div class="infobox-text">
+            Das SCR/SCQA-Framework eignet sich besonders für <strong>Entscheidungs- und Empfehlungspräsentationen</strong> mit einem Handlungsauftrag. Bei explorativen Analysen (Wir wissen noch nicht, was das Problem ist), in Change-Management-Prozessen oder bei stark skeptischem Publikum kann es sinnvoll sein, die Struktur anzupassen – z.B. durch eine stärkere narrative Einstimmung vor der Komplikation.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ KING COUNTY FALLSTUDIE ═══ -->
+  <section id="example">
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Praxisbeispiel</div>
+        <h2 class="section-title">McKinsey für King County, Seattle</h2>
+        <p class="section-sub">
+          Auftrag: Herausforderung der Obdachlosigkeit angehen. So hat McKinsey das SCR-Framework in der Praxis angewendet – nicht explizit beschriftet, aber klar strukturiert.
+        </p>
+      </div>
+
+      <div class="case-box sr">
+        <div class="case-header">
+          <div class="case-header-dot" style="background:#3A86FF;"></div>
+          <div class="case-header-dot" style="background:#FF6B6B;margin-left:6px;"></div>
+          <div class="case-header-dot" style="background:#51CF66;margin-left:6px;"></div>
+          <span class="case-header-label" style="margin-left:16px;">McKinsey Slide-Deck · King County Homelessness Project</span>
+        </div>
+        <div class="case-body">
+
+          <div class="case-row">
+            <div>
+              <span class="case-label label-s">S · Situation</span>
+            </div>
+            <div class="case-text">
+              <strong>Obdachlosigkeit ist ein Problem in King County.</strong><br>
+              Folien 1–2 setzen den Kontext: Die Obdachlosigkeit nimmt in King County zu – trotz sinkender Stichtagszählung 2019 ist die Gesamtentwicklung negativ. Zwischen 2008 und 2019 wuchs die obdachlose Bevölkerung von 9.000 auf 11.200 Personen.
+            </div>
+          </div>
+
+          <div class="case-row">
+            <div>
+              <span class="case-label label-c">C · Komplikation</span>
+            </div>
+            <div class="case-text">
+              <strong>Das Problem wird schlimmer, weil Mietkosten schneller steigen als Einkommen.</strong><br>
+              Folien 3–10 belegen: Zwischen 2016 und 2018 stieg die Zahl betroffener Haushalte von 20.700 auf 22.500 (+4,2 % p.a.). Strukturelle Ursache: Die Schere zwischen Wohnkosten und Einkommensentwicklung öffnet sich kontinuierlich.
+              <br><br><em style="color:var(--gray-400);font-size:13px;">Implizite Frage: „Was sollte King County dagegen tun?"</em>
+            </div>
+          </div>
+
+          <div class="case-row">
+            <div>
+              <span class="case-label label-r">R · Lösung</span>
+            </div>
+            <div class="case-text">
+              <strong>Investitionen in bezahlbaren Wohnraum lösen das Problem – und sind günstiger als die Opportunitätskosten der Obdachlosigkeit.</strong><br>
+              Ab Folie 10: Konkrete Empfehlungen und Investitionspfade. Der entscheidende Hebel: Prävention ist langfristig günstiger als der Umgang mit den Folgekosten – ein starkes Argument für den Kunden.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Merksatz -->
+      <div style="margin-top:var(--sp4);padding:var(--sp3) var(--sp4);background:var(--gray-100);border-radius:var(--r-md);display:flex;gap:var(--sp2);align-items:flex-start;" class="sr">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;flex-shrink:0;">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        <p style="font-size:13px;color:var(--gray-700);line-height:1.6;">
+          <strong>Schlüssel-Insight:</strong> Die SCR-Struktur steht in der McKinsey-Präsentation nicht explizit. Man muss danach suchen. Aber sie ist die Wirbelsäule, die alles zusammenhält. Die Storyline ist das Fundament – die Visualisierungen sind nur die Verkleidung.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ PROZESS: SELBST STORYLINEN ═══ -->
+  <section id="process">
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Schritt-für-Schritt</div>
+        <h2 class="section-title">Selbst Storylines schreiben</h2>
+        <p class="section-sub">
+          Wo beginnt man – und warum ist das Werkzeug entscheidend? McKinseys Prozess in 4 Phasen.
+        </p>
+      </div>
+
+      <!-- Word vs PPT -->
+      <div class="compare-grid sr" style="margin-bottom:var(--sp5);">
+        <div class="compare-card word">
+          <div class="compare-card-label">Empfohlen</div>
+          <h4>Phase 1: Word</h4>
+          <ul class="compare-list">
+            <li>Storyline auf einer Seite lesbar – kein Blättern</li>
+            <li>Iterativer Prozess: schreiben, Feedback, überarbeiten</li>
+            <li>Logische Widersprüche sofort erkennbar</li>
+            <li>Änderungen kosten keine Folie neu aufzubauen</li>
+            <li>Fokus auf Argument, nicht auf Formatierung</li>
+          </ul>
+        </div>
+        <div class="compare-card ppt">
+          <div class="compare-card-label">Häufiger Fehler</div>
+          <h4>Direkt PowerPoint öffnen</h4>
+          <ul class="compare-list">
+            <li>Storyline über 15+ Folien verteilt – schwer zu lesen</li>
+            <li>Widersprüche zwischen Folie 3 und 19 unsichtbar</li>
+            <li>Man baut Folien um statt Argumente zu schärfen</li>
+            <li>Formatierung ablenkt vom logischen Aufbau</li>
+            <li>Iterationen werden teuer (Folien komplett neu)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dot-Dash Struktur -->
+      <div class="sr">
+        <div class="eyebrow">Word-Methode</div>
+        <h2 class="section-title">Die Dot-Dash-Struktur</h2>
+        <p class="section-sub">McKinseys Methode in Word: Hauptaussagen (Dots) und unterstützende Daten (Dashes). Diese Struktur wird später direkt zu Aktionstiteln und Folienkörpern.</p>
+      </div>
+
+      <div class="dot-dash-box sr">
+        <div class="dot-dash-header">Storyline in Word · Dot-Dash-Methode</div>
+
+        <div class="dot-item">
+          <div class="dot-row">
+            <div class="dot-marker">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6" fill="white" stroke="white"/></svg>
+            </div>
+            <div class="dot-text">Obwohl die Stichtagszählung 2019 gesunken ist, nimmt die Obdachlosigkeit weiter zu.</div>
+          </div>
+          <div class="dash-rows">
+            <div class="dash-row">
+              <div class="dash-marker"></div>
+              <div class="dash-text">Zwischen 2008 und 2019 wuchs die obdachlose Bevölkerung von 9.000 auf 11.200 Personen</div>
+            </div>
+            <div class="dash-row">
+              <div class="dash-marker"></div>
+              <div class="dash-text">Zwischen 2016 und 2018 stieg die Zahl betroffener Haushalte von 20.700 auf 22.500 (Wachstum 4,2 % p. a.)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dot-item">
+          <div class="dot-row">
+            <div class="dot-marker">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6" fill="white" stroke="white"/></svg>
+            </div>
+            <div class="dot-text">Steigende Mietkosten übersteigen das Einkommenswachstum – strukturelle Ursache der Krise.</div>
+          </div>
+          <div class="dash-rows">
+            <div class="dash-row">
+              <div class="dash-marker"></div>
+              <div class="dash-text">Mietpreisindex: +38 % seit 2010 vs. Medianeinkommen: +12 % (Seattle, gleicher Zeitraum)</div>
+            </div>
+            <div class="dash-row">
+              <div class="dash-marker"></div>
+              <div class="dash-text">Besonders kritisch: untere Einkommensquartile mit Kostenlast über 50 % des Nettoeinkommens</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dot-item">
+          <div class="dot-row">
+            <div class="dot-marker">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6" fill="white" stroke="white"/></svg>
+            </div>
+            <div class="dot-text">Investitionen in bezahlbaren Wohnraum sind die kostengünstigere Alternative zur Folgenbehandlung.</div>
+          </div>
+          <div class="dash-rows">
+            <div class="dash-row">
+              <div class="dash-marker"></div>
+              <div class="dash-text">Prävention: ca. 3.500 $ / Person / Jahr vs. Notunterkünfte + Sozialleistungen: ca. 12.000 $ / Person / Jahr</div>
+            </div>
+            <div class="dash-row">
+              <div class="dash-marker"></div>
+              <div class="dash-text">Empfehlung: Drei Investitionspfade (Neubau, Sanierung, Transferleistungen) mit ROI-Analyse</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ FOLIENSKELETT ═══ -->
+  <section>
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Phase 2 · PowerPoint</div>
+        <h2 class="section-title">Die zwei Logik-Flüsse</h2>
+        <p class="section-sub">
+          Wenn die Storyline in Word steht, öffnet man PowerPoint. Jede Folie besteht aus zwei Teilen – und das Deck muss zwei Logiktests bestehen.
+        </p>
+      </div>
+
+      <div class="flow-grid sr">
+        <div class="flow-card horizontal">
+          <div class="flow-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+          <div class="flow-title">Horizontaler Flow</div>
+          <div class="flow-desc">Liest man nur die <strong>Aktionstitel</strong> von Folie 1 bis Ende, erzählen sie eine vollständige Geschichte – ohne den Folienkörper zu brauchen.</div>
+          <div class="flow-rule">Aktionstitel → vollständige Storyline</div>
+        </div>
+
+        <div class="flow-card vertical">
+          <div class="flow-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+            </svg>
+          </div>
+          <div class="flow-title">Vertikaler Flow</div>
+          <div class="flow-desc">Liest man den <strong>Folienkörper</strong>, unterstützt er den Aktionstitel vollständig. Kein Datum, das nicht den Titel belegt – kein Titel, der nicht durch Daten gedeckt ist.</div>
+          <div class="flow-rule">Folienkörper → belegt den Aktionstitel</div>
+        </div>
+      </div>
+
+      <!-- Horizontaler Flow – konkretes Beispiel -->
+      <div class="infobox infobox-orange sr" style="margin-top:var(--sp4);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+        <div class="infobox-content">
+          <div class="infobox-title">Beispiel – Horizontaler Flow (King County)</div>
+          <div class="infobox-text">
+            <strong>Folie 1:</strong> „Obdachlosigkeit in King County wächst trotz positiver Kurzzeitdaten."<br>
+            <strong>Folie 2:</strong> „Steigende Mietkosten treiben strukturell mehr Haushalte in finanzielle Not."<br>
+            <strong>Folie 3:</strong> „Prävention durch bezahlbaren Wohnraum ist 3,4× günstiger als Folgenbehandlung."<br>
+            <strong>Folie 4:</strong> „King County sollte sofort in drei Investitionspfade einsteigen."<br><br>
+            → Liest man nur diese vier Titel, kennt man Situation, Problem, Argument und Empfehlung – ohne eine einzige Folie aufzumachen.
+          </div>
+        </div>
+      </div>
+
+      <!-- So-What?-Test -->
+      <div class="infobox infobox-blue sr">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <div class="infobox-content">
+          <div class="infobox-title">So-What?-Test</div>
+          <div class="infobox-text">
+            Lies jeden Dot laut vor und frage danach: „Na und?" Wenn eine ehrliche Antwort möglich ist – wenn der Satz also keine abgeschlossene Aussage darstellt – dann ist er kein Aktionstitel, sondern ein Thema.<br><br>
+            ❌ „Obdachlosigkeit in King County" → <em>So what?</em> Weiß man noch nicht.<br>
+            ✅ „Die Obdachlosigkeit in King County wächst trotz sinkender Stichtagszahlen." → <em>So what?</em> Jetzt klar: Es gibt Handlungsbedarf.
+          </div>
+        </div>
+      </div>
+
+      <!-- Mapping Word → PPT -->
+      <div class="sr" style="margin-top:var(--sp5);">
+        <div class="eyebrow">Übertragung Word → PowerPoint</div>
+        <h2 class="section-title" style="font-size:22px;">Dot-Dash → Aktionstitel + Folienkörper</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:var(--sp3);align-items:center;margin-top:var(--sp3);" class="sr">
+        <div style="background:var(--orange-10);border:1px solid var(--orange-20);border-radius:var(--r-md);padding:var(--sp3);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:8px;">DOTS (Punkte)</div>
+          <div style="font-size:13px;color:var(--gray-700);">Hauptaussagen der Storyline – kurz, präzise, handlungsorientiert</div>
+        </div>
+        <div style="text-align:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div style="background:var(--blue-10);border:1px solid var(--blue-20);border-radius:var(--r-md);padding:var(--sp3);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:8px;">AKTIONSTITEL</div>
+          <div style="font-size:13px;color:var(--gray-700);">Headline jeder Folie – beantwortet „So what?" für diese Folie</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:var(--sp3);align-items:center;margin-top:var(--sp2);" class="sr sr-delay-1">
+        <div style="background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--r-md);padding:var(--sp3);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray-500);margin-bottom:8px;">DASHES (Striche)</div>
+          <div style="font-size:13px;color:var(--gray-700);">Unterstützende Daten, Statistiken, Belege für die Hauptaussage</div>
+        </div>
+        <div style="text-align:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div style="background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--r-md);padding:var(--sp3);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray-500);margin-bottom:8px;">FOLIENKÖRPER</div>
+          <div style="font-size:13px;color:var(--gray-700);">Diagramme, Charts, Tabellen – belegen den Aktionstitel mit Daten</div>
+        </div>
+      </div>
+
+      <!-- Format Aktionstitel: gut vs. schlecht -->
+      <div class="sr" style="margin-top:var(--sp5);">
+        <div class="eyebrow">Qualitätsmerkmal</div>
+        <h2 class="section-title" style="font-size:22px;">Was ist ein guter Aktionstitel?</h2>
+        <p class="section-sub" style="margin-bottom:var(--sp3);">Aktionstitel folgen einem klaren syntaktischen Muster: <strong>Subjekt + Verb + (quantifiziertes) Objekt.</strong> Kein Nomen ohne Aussage. Immer Satz, nie Thema.</p>
+      </div>
+
+      <div class="action-table-wrap sr">
+        <table class="action-table">
+          <thead>
+            <tr>
+              <th class="col-bad">❌ Schlechter Titel (Thema)</th>
+              <th class="col-good">✅ Guter Aktionstitel (Aussage)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-bad">Kostenentwicklung Wohnraum</td>
+              <td class="col-good">Mietkosten steigen 3× schneller als Einkommen</td>
+            </tr>
+            <tr>
+              <td class="col-bad">Investitionen in Wohnraum</td>
+              <td class="col-good">Investitionen in Wohnraum senken Langzeitkosten um 70 %</td>
+            </tr>
+            <tr>
+              <td class="col-bad">Obdachlosigkeit King County</td>
+              <td class="col-good">Obdachlosigkeit wächst trotz positiver Kurzzeitdaten</td>
+            </tr>
+            <tr>
+              <td class="col-bad">Ergebnisse der Analyse</td>
+              <td class="col-good">Prävention ist 3,4× günstiger als Folgenbehandlung</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="action-table-note">Regel: Aktionstitel = Subjekt + Verb + (quantifiziertes) Objekt</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ PROCESS STEPS ═══ -->
+  <section>
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Der vollständige Prozess</div>
+        <h2 class="section-title">4 Phasen vom Argument zur Präsentation</h2>
+        <p class="section-sub">McKinseys Schritt-für-Schritt-Methodik, um aus einer Analyse ein überzeugendes Slide-Deck zu bauen.</p>
+      </div>
+
+      <div class="process-steps">
+
+        <!-- Phase 1 -->
+        <div class="process-step sr">
+          <div>
+            <div class="step-num">1</div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Analyse &amp; Synthese abschließen</div>
+            <div class="step-desc">Bevor das Storylining beginnt: alle Analysen sind fertig, Schlussfolgerungen und Empfehlungen für den Kunden sind erarbeitet. Storylining ist das Verpacken dieser Ergebnisse – nicht das Erarbeiten.</div>
+            <div class="step-tag">Vorbedingung</div>
+
+            <!-- MECE Box nach Phase 1 -->
+            <div style="margin-top:var(--sp3);background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-md);padding:var(--sp3);box-shadow:var(--shadow);">
+              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--orange);margin-bottom:var(--sp2);">MECE – Das Qualitätsprinzip der Storyline</div>
+              <div style="font-size:13px;color:var(--gray-700);margin-bottom:var(--sp3);line-height:1.65;">
+                <strong>MECE</strong> = <em>Mutually Exclusive, Collectively Exhaustive</em> – das zweite McKinsey-Kernprinzip. Ohne MECE werden Storylines unkontrolliert und lückenhaft.
+              </div>
+              <div class="mece-grid">
+                <div class="mece-card mece-card-me">
+                  <div class="mece-card-title">Mutually Exclusive</div>
+                  <div class="mece-card-desc">Kein Argument überlappt mit einem anderen. Jede Ursache wird genau einmal genannt – keine Redundanzen.</div>
+                </div>
+                <div class="mece-card mece-card-ce">
+                  <div class="mece-card-title">Collectively Exhaustive</div>
+                  <div class="mece-card-desc">Alle Argumente zusammen decken das Thema vollständig ab. Kein relevanter Aspekt fehlt.</div>
+                </div>
+              </div>
+              <div class="mece-test">
+                <strong>Praxistest:</strong><br>
+                „Könnten zwei meiner Dots zu einem zusammengefasst werden?" → nicht MECE.<br>
+                „Gibt es eine Ursache, die ich nicht nenne?" → nicht MECE.<br><br>
+                MECE gilt für Dots untereinander <strong>und</strong> für Dashes innerhalb eines Dots.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+
+        <!-- Phase 2 -->
+        <div class="process-step sr">
+          <div>
+            <div class="step-num">2</div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Storyline in Word schreiben (Dot-Dash)</div>
+            <div class="step-desc">Hauptaussagen (Dots) und unterstützende Daten (Dashes) in Word entwickeln. Iterativ: mit Manager reviewen, überarbeiten, schärfen – so lange bis die Logik wasserdicht ist. Alle Änderungen hier vornehmen, nicht in PowerPoint.</div>
+            <div class="step-tag">Kern-Phase</div>
+
+            <!-- Elevator Pitch Test -->
+            <div class="infobox infobox-orange" style="margin-top:var(--sp3);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <div class="infobox-content">
+                <div class="infobox-title">Elevator-Pitch-Test</div>
+                <div class="infobox-text">
+                  Bevor du PowerPoint öffnest – erkläre die gesamte Storyline in <strong>60 Sekunden mündlich</strong>, ohne Folien, nur aus dem Kopf. Wenn du Kernbotschaft, Problem und Empfehlung in einer Minute klar kommunizieren kannst, ist die Storyline robust. Wenn nicht, ist die Argumentation noch nicht scharf genug. Dieser Test kostet nichts und spart Stunden Folienarbeit.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+
+        <!-- Phase 3 -->
+        <div class="process-step sr">
+          <div>
+            <div class="step-num">3</div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Folienskelett in PowerPoint bauen</div>
+            <div class="step-desc">Dots werden zu Aktionstiteln, Dashes zu Folienkörper-Platzhaltern. Horizontalen und vertikalen Flow prüfen.</div>
+            <div class="step-tag">Strukturierung</div>
+
+            <!-- Ghostdeck -->
+            <div style="margin-top:var(--sp3);padding:var(--sp3);background:var(--blue-10);border:1px solid var(--blue-20);border-radius:var(--r-md);">
+              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:8px;">Schritt 3a – Ghostdeck</div>
+              <div style="font-size:13px;color:var(--blue);line-height:1.7;">
+                Erstelle zunächst <strong>leere Folien</strong>, auf denen nur der Aktionstitel steht – kein Inhalt, kein Design. Lese alle Titel nacheinander laut vor. Erzählen sie als Folge eine vollständige Geschichte (horizontaler Flow-Test)? Wenn nicht: Reihenfolge oder Titel überarbeiten. Erst dann Folienkörper befüllen.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+
+        <!-- Phase 4 -->
+        <div class="process-step sr">
+          <div>
+            <div class="step-num">4</div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Visualisierungen aufbauen</div>
+            <div class="step-desc">Charts, Diagramme, Tabellen erstellen – jedes Element belegt den Aktionstitel der Folie (vertikaler Flow). Design verfeinern. Preattentive Attributes gezielt einsetzen, um den Blick auf den Kernbeweis zu lenken. Erst hier: Design, Farben, Layouts.</div>
+            <div class="step-tag">Finalisierung</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ZUSAMMENFASSUNG ═══ -->
+  <section id="summary" style="background:var(--white);">
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Vogelperspektive</div>
+        <h2 class="section-title">Alles auf einen Blick</h2>
+        <p class="section-sub">Das komplette McKinsey Storytelling-Framework – destilliert auf das Wesentliche.</p>
+      </div>
+
+      <div class="summary-board sr">
+        <div class="eyebrow">Das SCR-Framework – Zusammenfassung</div>
+        <h2>Situation · Komplikation · Resolution</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-num">S</div>
+            <div class="summary-title">Situation</div>
+            <div class="summary-label">Kontext herstellen. Thema einführen. Warum ist es relevant? Was muss der Leser wissen, um den Rest zu verstehen?</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-num">C</div>
+            <div class="summary-title">Komplikation</div>
+            <div class="summary-label">Problem einführen. Schwere deutlich machen. Bühne bereiten – Publikum muss verstehen, dass Handlungsbedarf besteht.</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-num">R</div>
+            <div class="summary-title">Resolution</div>
+            <div class="summary-label">Konkreter Bauplan. Empfehlungen und Lösungsansätze, die das Problem aus der Komplikation adressieren.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:var(--sp5);padding-top:var(--sp4);border-top:1px solid rgba(255,255,255,0.1);">
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--sp3);">
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:var(--sp2);">Prozess</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;">
+                1. Analyse abschließen<br>
+                2. Storyline in Word (Dot-Dash)<br>
+                3. Folienskelett in PowerPoint (Ghostdeck-Test)<br>
+                4. Visualisierungen aufbauen
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:var(--sp2);">Qualitätsprüfung</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;">
+                Elevator-Pitch-Test: Storyline in 60 Sek. mündlich erklärbar?<br>
+                Horizontaler Flow: Aktionstitel erzählen die Geschichte<br>
+                Vertikaler Flow: Folienkörper belegen den Titel
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ SYNTHESE: McKINSEY × STORYTELLING WITH DATA ═══ -->
+  <section id="synthese">
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Methodenvergleich</div>
+        <h2 class="section-title">McKinsey × Storytelling with Data</h2>
+        <p class="section-sub">
+          Cole Nussbaumer Knaflics Ansatz (<em>Storytelling with Data</em>, 2015) und das McKinsey-Framework operieren auf unterschiedlichen Ebenen und bilden zusammen ein vollständiges Werkzeugset.
+        </p>
+      </div>
+
+      <div class="synthesis-table-wrap sr">
+        <table class="synthesis-table">
+          <thead>
+            <tr>
+              <th>Ebene</th>
+              <th>McKinsey SCR/SCQA</th>
+              <th>Storytelling with Data (Knaflic)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Was</td>
+              <td>Argumentationsstruktur der gesamten Präsentation</td>
+              <td>Gestaltung einzelner Datenvisualisierungen</td>
+            </tr>
+            <tr>
+              <td>Kernfrage</td>
+              <td>Was soll das Publikum denken oder tun?</td>
+              <td>Was soll das Publikum in diesem Chart sehen?</td>
+            </tr>
+            <tr>
+              <td>Werkzeug</td>
+              <td>Storyline → Dot-Dash → Aktionstitel</td>
+              <td>Preattentive Attributes, Declutter, Highlight</td>
+            </tr>
+            <tr>
+              <td>Qualitätstest</td>
+              <td>Horizontaler Flow: Titel erzählen die Geschichte allein</td>
+              <td>„Big Idea" in einem Satz: Subjekt + Verb + Einsatz</td>
+            </tr>
+            <tr>
+              <td>Verknüpfung</td>
+              <td>Aktionstitel = Aussage der Folie</td>
+              <td>Chart-Headline = Knaflics „Big Idea" – beides verlangt Verb + konkreten Inhalt</td>
+            </tr>
+            <tr>
+              <td>Prozessschritt</td>
+              <td>Phase 1–3 (Argumentation und Struktur)</td>
+              <td>Phase 3–4 (Visualisierungsdesign und Verfeinerung)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sr">
+        <div class="eyebrow">Kombination in der Praxis</div>
+        <h2 class="section-title" style="font-size:22px;">4 Kombinationsregeln</h2>
+      </div>
+
+      <div class="combo-rules sr">
+        <div class="combo-rule">
+          <div class="combo-rule-num">1</div>
+          <div>
+            <div class="combo-rule-title">Reihenfolge</div>
+            <div class="combo-rule-desc">Die SCR-Struktur gibt vor, <em>was</em> auf jede Folie gehört. Knaflic-Methoden bestimmen, <em>wie</em> die Visualisierung dazu gestaltet wird. Nie umgekehrt beginnen.</div>
+          </div>
+        </div>
+        <div class="combo-rule">
+          <div class="combo-rule-num">2</div>
+          <div>
+            <div class="combo-rule-title">Titel-Konsistenz</div>
+            <div class="combo-rule-desc">Der McKinsey-Aktionstitel und Knaflics „Big Idea" sind dasselbe Konzept. Ein Satz, ein Verb, eine Botschaft. Beide Frameworks verlangen es – Priorität hat immer die Kongruenz von Titel und Chart.</div>
+          </div>
+        </div>
+        <div class="combo-rule">
+          <div class="combo-rule-num">3</div>
+          <div>
+            <div class="combo-rule-title">Declutter = Vertikaler Flow</div>
+            <div class="combo-rule-desc">Knaflics Prinzip, alles zu entfernen, was nicht zur Botschaft beiträgt (Chartjunk, überflüssige Achsen, dekorative Elemente), ist die visuelle Entsprechung von McKinseys vertikalem Flow: Jedes Element muss den Aktionstitel belegen.</div>
+          </div>
+        </div>
+        <div class="combo-rule">
+          <div class="combo-rule-num">4</div>
+          <div>
+            <div class="combo-rule-title">Preattentive Attributes steuern die Aufmerksamkeit</div>
+            <div class="combo-rule-desc">Farbe, Größe und Position lenken das Auge. In einem gut gestalteten Deck folgt der Blick des Lesers automatisch dem horizontalen Flow, weil die Aktionstitel visuell prominent sind und die Charts den Blick auf den Kernbeweis leiten.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ STUDIERENDEN-CHECKLISTE ═══ -->
+  <section id="checkliste">
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Selbstreflexion</div>
+        <h2 class="section-title">Checkliste: Eigene Präsentationen überdenken und verbessern</h2>
+        <p class="section-sub">Systematische Qualitätsprüfung in 5 Phasen – von der ersten Idee bis zur Abgabe.</p>
+      </div>
+
+      <div class="checklist-phases sr">
+
+        <!-- Phase 1 -->
+        <div class="checklist-phase">
+          <div class="checklist-phase-header">
+            <div class="checklist-phase-num">1</div>
+            <div class="checklist-phase-title">Vor PowerPoint: Argumentation klären</div>
+          </div>
+          <div class="checklist-items">
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Kann ich meine Kernbotschaft in einem Satz formulieren? (Elevator-Pitch-Test: 60 Sekunden mündlich erklärbar?)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Habe ich die drei SCR-Elemente klar identifiziert? (S = Kontext, C = Problem + Handlungsdruck, R = Empfehlung)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Enthält meine Komplikation eine Brückenformel? („Obwohl X gilt, tritt Y auf" / „Wenn nichts passiert, dann Z")</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Ist die implizite Frage nach der Komplikation klar erkennbar?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Folgen meine Hauptargumente dem MECE-Prinzip? (keine Überschneidungen, keine Lücken)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Habe ich die Analyse vollständig abgeschlossen, bevor ich mit dem Storylining begonnen habe?</div></div>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="checklist-phase">
+          <div class="checklist-phase-header">
+            <div class="checklist-phase-num">2</div>
+            <div class="checklist-phase-title">Storyline in Text (Dot-Dash in Word)</div>
+          </div>
+          <div class="checklist-items">
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Passen alle Hauptaussagen (Dots) auf eine DIN-A4-Seite ohne Scrollen?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Besteht jeder Dot den So-What?-Test? („Obdachlosigkeit nimmt zu" → So what? → kein guter Dot)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Stützt jeder Dash (Beleg/Datum) eindeutig seinen Dot – ohne Umwege?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Hat jemand anderes die Logik gegengelesen und auf Widersprüche geprüft?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Gibt es keine logischen Widersprüche zwischen verschiedenen Dots?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Kann ich die Storyline aus dem Kopf in 60 Sekunden erklären? (Elevator-Pitch-Test bestanden?)</div></div>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="checklist-phase">
+          <div class="checklist-phase-header">
+            <div class="checklist-phase-num">3</div>
+            <div class="checklist-phase-title">Ghostdeck und Folienstruktur</div>
+          </div>
+          <div class="checklist-items">
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Ghostdeck-Test: Habe ich zuerst leere Folien mit nur Aktionstiteln erstellt und diese laut vorgelesen?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Horizontaler Flow-Test: Liest man NUR die Aktionstitel, ergibt sich eine vollständige, verständliche Geschichte?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Sind ALLE Aktionstitel vollständige Aussagesätze mit Subjekt + Verb + Objekt? (Kein Thema wie „Kostenentwicklung")</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Gibt es Folien mit mehr als einer Kernaussage? (→ Aufteilen: 1 Folie = 1 Argument)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Vertikaler Flow-Test: Trägt JEDES Element im Folienkörper zur Aussage des Titels bei – kein Datum ohne Funktion?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Ist die Empfehlung (Resolution) konkret genug für eine Entscheidung? („Drei Investitionspfade" statt „mehr investieren")</div></div>
+          </div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="checklist-phase">
+          <div class="checklist-phase-header">
+            <div class="checklist-phase-num">4</div>
+            <div class="checklist-phase-title">Visualisierungen (Storytelling with Data)</div>
+          </div>
+          <div class="checklist-items">
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Ist der Diagrammtyp zum Erkenntnisziel passend? (Vergleich → Balken; Trend → Linie; Anteil → Balken, kein Kreisdiagramm)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Wurde der Chart „decluttered"? (Keine überflüssigen Gitternetzlinien, keine doppelten Achsenbeschriftungen, kein Chartjunk)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Lenken Preattentive Attributes (Farbe, Fettschrift, Größe) den Blick auf das Entscheidende?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Stimmt die Chart-Headline inhaltlich mit dem Aktionstitel überein oder leitet sie direkt darauf hin?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Sind Achsenbeschriftungen, Einheiten und Datenquellen vorhanden?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Wurden Farben konsistent eingesetzt? (Gleiche Kategorie = immer gleiche Farbe; Hervorhebung = eine Signalfarbe)</div></div>
+          </div>
+        </div>
+
+        <!-- Gesamtcheck -->
+        <div class="checklist-phase">
+          <div class="checklist-phase-header">
+            <div class="checklist-phase-num final">✓</div>
+            <div class="checklist-phase-title">Gesamtcheck vor Abgabe oder Präsentation</div>
+          </div>
+          <div class="checklist-items">
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Ist die Zielgruppe klar definiert und wurde die Präsentation auf ihr Vorwissen und ihre Interessen zugeschnitten?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Wurde die Schlussfolgerung/Empfehlung FRÜH kommuniziert – nicht erst am Ende? (Pyramidenprinzip!)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Gibt es redundante Folien, die nichts zur Storyline beitragen? (Jede Folie, die fehlen könnte, sollte fehlen)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Ist die Präsentation auch ohne mündlichen Vortrag verständlich? (Leave-Behind-Test: allein lesen = alles verstehen)</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Würde eine fachfremde Person nach 3 Minuten wissen, was zu tun ist?</div></div>
+            <div class="checklist-item"><div class="check-box"></div><div class="checklist-item-text">Enthält kein Aktionstitel einen Tipp- oder Grammatikfehler?</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LITERATUR ═══ -->
+  <section style="background:var(--white);">
+    <div class="container">
+      <div class="sr">
+        <div class="eyebrow">Quellen &amp; Literatur</div>
+        <h2 class="section-title">Empfohlene Literatur</h2>
+      </div>
+      <ul class="lit-list sr">
+        <li>Minto, B. (2002). <em>The Pyramid Principle: Logic in Writing and Thinking</em>. Pearson Education. (Originalausgabe 1987)</li>
+        <li>Minto International (Hrsg.). (2005). <em>Das Pyramidenprinzip. Logisches Schreiben, Denken und Problemlösen</em>. Pearson.</li>
+        <li>Nussbaumer Knaflic, C. (2015). <em>Storytelling with Data: A Data Visualization Guide for Business Professionals</em>. Wiley.</li>
+        <li>McKinsey &amp; Company. (2019). <em>King County Homelessness Project – Public Slide Deck</em>. [Öffentlich zugänglich via McKinsey.com]</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">McKinsey · SCR-Framework</div>
+      <div class="footer-note">Basierend auf: „Storytelling in PowerPoint: Learn McKinsey's 3-Step Framework" · © <script>document.write(new Date().getFullYear())</script></div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll-Reveal Script -->
+<script>
+(function() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+  document.querySelectorAll('.sr').forEach(el => io.observe(el));
+})();
+</script>
+
+</body>
+</html>
